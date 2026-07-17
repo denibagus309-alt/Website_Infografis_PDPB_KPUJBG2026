@@ -1,4 +1,6 @@
-body{
+<style>
+
+<body>
 
 margin:0;
 
@@ -74,22 +76,16 @@ width:100%;
 
 border-collapse:collapse;
 
-background:white;
-
-}
-
-th{
+background:white;}th{
 
 background:#00695c;
 
-color:white;
-
-}
+color:white;}
 
 td,th{
 
 padding:10px;
 
-border:1px solid #ddd;
+border:1px solid #ddd;}
 
-}
+<style>
