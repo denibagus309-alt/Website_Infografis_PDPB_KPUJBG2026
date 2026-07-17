@@ -1,0 +1,40 @@
+/* Background Utama */
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:
+        radial-gradient(circle at top left,#1e3a8a 0%,transparent 35%),
+        radial-gradient(circle at bottom right,#06b6d4 0%,transparent 30%),
+        linear-gradient(135deg,#081229,#0f172a,#111827,#172554);
+    background-size:cover;
+    background-attachment:fixed;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* Grid Digital */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size:40px 40px;
+    pointer-events:none;
+}
+
+/* Efek Cahaya */
+body::after{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    background:#00e5ff;
+    filter:blur(180px);
+    opacity:.12;
+    top:-120px;
+    right:-120px;
+    border-radius:50%;
+    pointer-events:none;
+}
