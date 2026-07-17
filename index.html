@@ -1,316 +1,232 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard Infografis Penduduk</title>
+    <title>Aplikasi Infografis Data Penduduk</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <!-- CSS -->
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/responsive.css">
-    
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- SheetJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 
 <body>
 
-    <h1>Dashboard Data Penduduk</h1>
-    
-</head>
+    <!-- Background -->
+    <div class="bg-animation"></div>
 
-<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
 
-<header>
+        <div class="logo">
+            <i class="fa-solid fa-chart-column"></i>
+            <h2>SI-PENDUDUK</h2>
+        </div>
 
-<h1>INFOGRAFIS DATA PENDUDUK</h1>
+        <ul>
 
-</header>
+            <li class="active">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </li>
 
-<div class="menu">
+            <li>
+                <i class="fa-solid fa-users"></i>
+                Data Penduduk
+            </li>
 
-<button onclick="exportExcel()">Export Excel</button>
+            <li>
+                <i class="fa-solid fa-chart-pie"></i>
+                Statistik
+            </li>
 
-<button onclick="exportPDF()">Export PDF</button>
+            <li>
+                <i class="fa-solid fa-file-pdf"></i>
+                Laporan
+            </li>
 
-<button onclick="window.print()">Cetak</button>
+            <li>
+                <i class="fa-solid fa-gear"></i>
+                Pengaturan
+            </li>
 
-<input type="file" id="excel">
+        </ul>
 
-</div>
+    </aside>
 
-<div class="kpi">
+    <!-- Main -->
+    <main class="content">
 
-<div class="box">
+        <!-- Header -->
+        <header>
 
-<h2 id="total">0</h2>
+            <div>
+                <h1>Dashboard Infografis Data Penduduk</h1>
+                <p>Sistem Informasi Kependudukan Berbasis Web</p>
+            </div>
 
-<p>Total Penduduk</p>
+            <div class="aksi">
 
-</div>
+                <button onclick="exportExcel()">
+                    <i class="fa-solid fa-file-excel"></i>
+                    Excel
+                </button>
 
-<div class="box">
+                <button onclick="exportPDF()">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    PDF
+                </button>
 
-<h2 id="lk">0</h2>
+                <button onclick="window.print()">
+                    <i class="fa-solid fa-print"></i>
+                    Cetak
+                </button>
 
-<p>Laki-laki</p>
+            </div>
 
-</div>
+        </header>
 
-<div class="box">
+        <!-- KPI -->
+        <section class="kpi">
 
-<h2 id="pr">0</h2>
+            <div class="box">
 
-<p>Perempuan</p>
+                <h2 id="total">0</h2>
 
-</div>
+                <p>Total Penduduk</p>
 
-</div>
+            </div>
 
-<div class="chart">
+            <div class="box">
 
-<canvas id="jkChart"></canvas>
+                <h2 id="lk">0</h2>
 
-</div>
+                <p>Laki-laki</p>
 
-<table id="tbl">
+            </div>
 
-<thead>
+            <div class="box">
 
-<tr>
+                <h2 id="pr">0</h2>
 
-<th>NIK</th>
+                <p>Perempuan</p>
 
-<th>Nama</th>
+            </div>
 
-<th>JK</th>
+            <div class="box">
 
-<th>Umur</th>
+                <h2 id="kk">0</h2>
 
-<th>Pendidikan</th>
+                <p>Kepala Keluarga</p>
 
-<th>Pekerjaan</th>
+            </div>
 
-</tr>
+        </section>
 
-</thead>
+        <!-- Menu -->
+        <section class="toolbar">
 
-<tbody>
+            <input
+                type="text"
+                id="cari"
+                placeholder="Cari NIK atau Nama..."
+                onkeyup="cariData()">
 
-</tbody>
+            <input
+                type="file"
+                id="excel"
+                accept=".xlsx,.xls">
 
-</table>
+            <button onclick="importExcel()">
+                Import Excel
+            </button>
 
-<script src="js/app.js"></script>
+        </section>
 
+        <!-- Grafik -->
+        <section class="grafik">
 
-<let data=[];>
+            <div class="card">
 
-<function tampil(){
+                <canvas id="jkChart"></canvas>
 
-let tb=document.querySelector("#tbl tbody");
+            </div>
 
-<tb.innerHTML="";
+            <div class="card">
 
-<let lk=0;
+                <canvas id="umurChart"></canvas>
 
-let pr=0;
+            </div>
 
-data.forEach(x=>{
+        </section>
 
-<tb.innerHTML+=`
+        <!-- Tabel -->
+        <section class="table-area">
 
-<tr>
+            <table id="tbl">
 
-<td>{x.nik}</td>
+                <thead>
 
-<td>{x.nama}</td>
+                    <tr>
 
-<td>{x.jk}</td>
+                        <th>NIK</th>
 
-<td>{x.umur}</td>
+                        <th>Nama</th>
 
-<td>{x.pendidikan}</td>
+                        <th>JK</th>
 
-<td>{x.pekerjaan}</td>
+                        <th>Umur</th>
 
-</tr>
+                        <th>Pendidikan</th>
 
-<if(x.jk=="Laki-laki")
+                        <th>Pekerjaan</th>
 
-lk++;
+                        <th>Aksi</th>
 
-else
+                    </tr>
 
-pr++;
+                </thead>
 
-});
+                <tbody>
 
-document.getElementById("total").innerHTML=data.length;
+                </tbody>
 
-document.getElementById("lk").innerHTML=lk;
+            </table>
 
-document.getElementById("pr").innerHTML=pr;
+        </section>
 
-<grafik(lk,pr);
+    </main>
 
-}
+    <!-- Javascript -->
+    <script src="js/storage.js"></script>
+    <script src="js/chart.js"></script>
+    <script src="js/import.js"></script>
+    <script src="js/export.js"></script>
+    <script src="js/app.js"></script>
 
-function grafik(l,p){
-
-new Chart(document.getElementById("jkChart"),{
-
-<type:"pie",
-
-<data:{labels:["Laki-laki","Perempuan"]>,<datasets:[{data:[l,p]}]
-
-}
-
-function exportExcel(){
-
-let wb=XLSX.utils.book_new();
-
-let ws=XLSX.utils.json_to_sheet(data);
-
-XLSX.utils.book_append_sheet(wb,ws,"Penduduk");
-
-<XLSX.writeFile(wb,"Penduduk.xlsx");
-
-}
-
-<async function exportPDF(){
-
-const {jsPDF}=window.jspdf;
-
-let pdf=new jsPDF();
-
-pdf.text("Laporan Data Penduduk",20,20);
-
-<let y=40;
-
-data.forEach(x=>{
-
-<pdf.text(
-
-`${x.nik} ${x.nama} ${x.jk}`,
-
-20,
-
-y
-
-);
-
-y+=10;
-
-});
-
-pdf.save("Laporan.pdf");
-
-}
-
-
-<body{
-
-margin:0;
-
-font-family:arial;
-
-background:#f4f6f8;
-
-}
-
-header{
-
-background:#00695c;
-
-color:white;
-
-padding:20px;
-
-text-align:center;
-
-}
-
-.menu{
-
-padding:20px;
-
-}
-
-button{
-
-padding:10px 20px;
-
-margin:5px;
-
-}
-
-.kpi{
-
-display:flex;
-
-gap:20px;
-
-padding:20px;
-
-}
-
-.box{
-
-background:white;
-
-flex:1;
-
-padding:20px;
-
-text-align:center;
-
-border-radius:10px;
-
-box-shadow:0 0 10px #ccc;
-
-}
-
-.chart{
-
-width:500px;
-
-margin:auto;
-
-}
-
-table{
-
-width:100%;
-
-border-collapse:collapse;
-
-background:white;
-
-}
-
-th{
-
-background:#00695c;
-
-color:white;
-
-}
-
-td,th{
-
-padding:10px;
-
-border:1px solid #ddd;}
-    
 </body>
-    
-</body>
-    
-</html>
 
 </html>
-    
-</head>
-    
+```
