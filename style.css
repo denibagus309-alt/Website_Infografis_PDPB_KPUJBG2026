@@ -1,0 +1,205 @@
+/* ==========================================================================
+   PDPB 2026 - Custom Stylesheet
+   Complements the Tailwind utility classes already used in index.html.
+   ========================================================================== */
+
+:root {
+  --pdpb-cyan: #0891b2;
+  --pdpb-cyan-dark: #0e7490;
+  --pdpb-slate-900: #0f172a;
+}
+
+/* --------------------------------------------------------------------------
+   Base / smoothing
+   -------------------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --------------------------------------------------------------------------
+   View transitions (switchTab)
+   -------------------------------------------------------------------------- */
+main section[id^="view-"] {
+  animation: pdpb-fade-in 0.25s ease-out;
+}
+
+@keyframes pdpb-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main section[id^="view-"] {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar navigation
+   -------------------------------------------------------------------------- */
+aside nav a {
+  position: relative;
+  transition: background-color 0.15s ease, color 0.15s ease, padding-left 0.15s ease;
+}
+
+aside nav a:hover {
+  padding-left: 1.15rem;
+}
+
+aside nav a.bg-cyan-600::before {
+  content: "";
+  position: absolute;
+  left: -1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 60%;
+  border-radius: 0 4px 4px 0;
+  background: #67e8f9;
+}
+
+/* Mobile drawer state, toggled via JS (toggleSidebar) */
+@media (max-width: 767px) {
+  aside {
+    position: fixed;
+    inset: 0 auto 0 0;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  aside.pdpb-sidebar-open {
+    display: flex !important;
+    transform: translateX(0);
+  }
+
+  .pdpb-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    z-index: 15;
+    animation: pdpb-fade-in 0.2s ease-out;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Scrollbars (sidebar nav + scrollable tables)
+   -------------------------------------------------------------------------- */
+aside nav::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+aside nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+aside nav::-webkit-scrollbar-thumb {
+  background-color: #334155;
+  border-radius: 999px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track,
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 999px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover,
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+/* --------------------------------------------------------------------------
+   Tables
+   -------------------------------------------------------------------------- */
+table tbody tr {
+  transition: background-color 0.12s ease;
+}
+
+table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+table tbody tr.pdpb-row-hidden {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Charts
+   -------------------------------------------------------------------------- */
+#chartGen,
+#chartGender {
+  max-height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   File drop zone (Import Database Excel)
+   -------------------------------------------------------------------------- */
+#view-import label.cursor-pointer {
+  transition: transform 0.15s ease;
+}
+
+.pdpb-dropzone-active {
+  border-color: var(--pdpb-cyan) !important;
+  background-color: #ecfeff !important;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+button {
+  cursor: pointer;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* --------------------------------------------------------------------------
+   Focus visibility (accessibility)
+   -------------------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+label:focus-within {
+  outline: 2px solid var(--pdpb-cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Print (used implicitly when exporting to PDF via browser print, if ever)
+   -------------------------------------------------------------------------- */
+@media print {
+  aside,
+  header {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+}
